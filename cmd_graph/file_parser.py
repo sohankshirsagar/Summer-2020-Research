@@ -1,3 +1,4 @@
+import math
 import re
 import json
 import matplotlib.pyplot as plt
@@ -9,7 +10,7 @@ def readData(fileName):
     fieldNames = []
     recordList = []
     for index, line in enumerate(lines):
-        fields = re.split("\s\s+", line.strip())
+        fields = re.split("\s+", line.strip())
         if (index == 0):
             fieldNames = fields
             # print(fieldNames)
@@ -21,7 +22,7 @@ def readData(fileName):
         #     fields.append("")
         record = {}
         for field, value in zip(fieldNames, fields):
-            record[field.strip()] = value
+            record[field.strip()] = float(value)
         recordList.append(record)
         # print(json.dumps(recordList, indent = 4))
         # if (index > 5):
@@ -35,9 +36,9 @@ def plotVBV(recordListV, recordListB):
     for recordB in recordListB:
         # print("{} Adding:{}".format(index, json.dumps(record, indent = 4)))
         for recordV in recordListV:
-            if (recordB['X'] == recordV ['X'] and recordB['Y'] == recordV['Y']):
-                xAxisArray.append(float(recordB['Mag']) - float(recordV['Mag']))
-                yAxisArray.append(float(recordV['Mag']))
+            if (math.floor(recordB['X']) == math.floor(recordV['X']) and math.floor(recordB['Y']) == math.floor(recordV['Y'])):
+                xAxisArray.append((recordB['Mag']) - (recordV['Mag']))
+                yAxisArray.append((recordV['Mag']))
     # print(xAxisArray)
     # print(yAxisArray)
     plt.scatter(xAxisArray, yAxisArray)
@@ -47,8 +48,8 @@ def plotVBV(recordListV, recordListB):
 
 
 def main():
-    recordListB = readData("./data/439Points.txt")
-    recordListV = readData("./data/555Points.txt")
+    recordListB = readData("./data/M12_B.txt")
+    recordListV = readData("./data/M12_V.txt")
     plotVBV(recordListV, recordListB)
 
 main()
