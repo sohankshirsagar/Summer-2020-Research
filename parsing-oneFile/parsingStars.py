@@ -3,6 +3,7 @@ import json
 import matplotlib.pyplot as plt
 
 MAX_COLUMN_CHAR_LENGTH = [13, 11, 10, 8, 9, 20, 11, 6, 10, 9, 9, 17]
+# test comment
 
 def readData():
     file = open("313 brightest stars.txt", "r")
