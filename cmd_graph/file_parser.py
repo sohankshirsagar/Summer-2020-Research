@@ -36,15 +36,15 @@ def plotVBV(recordListV, recordListB):
     yAxisArray = []
     for recordB in recordListB:
         # print("{} Adding:{}".format(index, json.dumps(record, indent = 4)))
-        # for recordV in recordListV:
-        #     if (math.floor(recordB['X']) == math.floor(recordV['X']) and math.floor(recordB['Y']) == math.floor(recordV['Y'])):
-        #         xAxisArray.append((recordB['Mag']) - (recordV['Mag']))
-        #         yAxisArray.append((recordV['Mag']))
-        # rounding to the nearest 5 for the x and y coordinates
         for recordV in recordListV:
-            if (myround(recordB['X']) == myround(recordV['X']) and myround(recordB['Y']) == myround(recordV['Y'])):
+            if (math.floor(recordB['X']) == math.floor(recordV['X']) and math.floor(recordB['Y']) == math.floor(recordV['Y'])):
                 xAxisArray.append((recordB['Mag']) - (recordV['Mag']))
                 yAxisArray.append((recordV['Mag']))
+        # rounding to the nearest 5 for the x and y coordinates
+        # for recordV in recordListV:
+        #     if (myround(recordB['X']) == myround(recordV['X']) and myround(recordB['Y']) == myround(recordV['Y'])):
+        #         xAxisArray.append((recordB['Mag']) - (recordV['Mag']))
+        #         yAxisArray.append((recordV['Mag']))
     # print(xAxisArray)
     # print(yAxisArray)
     plt.scatter(xAxisArray, yAxisArray)
@@ -58,8 +58,8 @@ def myround(x, base=5):
 
 
 def main():
-    recordListB = readData("./data/NGC957_B.txt")
-    recordListV = readData("./data/NGC957_V.txt")
+    recordListB = readData("./data/M12_B.txt")
+    recordListV = readData("./data/M12_V.txt")
     plotVBV(recordListV, recordListB)
 
 
