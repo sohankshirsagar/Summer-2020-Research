@@ -55,17 +55,17 @@ def plotVBV(recordListV, recordListB, gaiaData):
     for data in gaiaData:
         # print("proccessing: {} {}".format(data['Bmag'],data['Vmag']))
         try:
-            bMag = float(data['Bmag'].strip())
+            b_vMag = float(data['BP-RP'].strip())
         except ValueError:
             # print("Error while converting Bmag: {}".format(data['Bmag']))
             continue
         try:
-            vMag = float(data['Vmag'].strip())
+            vMag = float(data['RPmag'].strip())
         except ValueError:
             # print("Error while converting Vmag: {}".format(data['Vmag']))
             continue
         for xValue, yValue in zip(xAxisArray, yAxisArray):
-            if ((round((bMag-vMag), 1) == round((xValue)), 1) and (round((vMag), 1) == round((yValue), 1))):
+            if ((round((b_vMag), 3) == round((xValue)), 3) and (round((vMag), 3) == round((yValue), 3))):
                 matchingGaiaValuesX.append(xValue)
                 matchingGaiaValuesY.append(yValue)
     #print(removeValuesX)
@@ -84,7 +84,7 @@ def myround(x, base=5):
 def main():
     recordListB = readData("./data/M12_B.txt")
     recordListV = readData("./data/M12_V.txt")
-    gaiaData = readData("./data/Gaia_data.txt")
+    gaiaData = readData("./data/gaia_data_m12.txt")
     #print(gaiaData)
     plotVBV(recordListV, recordListB, gaiaData)
 

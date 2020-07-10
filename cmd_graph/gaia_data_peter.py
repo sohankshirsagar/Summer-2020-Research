@@ -38,7 +38,12 @@ for i in range(0,len(magnitude[0])):
     justV[i] = magnitude[1][i]
 
 
-job4 = Gaia.launch_job_async("SELECT * \
+job4 = Gaia.launch_job_async("SELECT * FROM gaiadr2.gaia_source WHERE CONTAINS(POINT('ICRS',gaiadr2.gaia_source.ra,gaiadr2.gaia_source.dec),CIRCLE('ICRS',251.809,-1.948,.3))=1 \
+AND pmra BETWEEN -2 AND 2 \
+AND pmdec BETWEEN -7 AND -6;", dump_to_file=True)
+
+"""
+Gaia.launch_job_async("SELECT * \
 FROM gaiadr2.gaia_source AS g, gaiadr2.urat1_best_neighbour AS tbest \
 WHERE g.source_id = tbest.source_id \
 AND CONTAINS(POINT('ICRS',g.ra,g.dec),CIRCLE('ICRS',251.809,-1.022,1))=1 \
@@ -46,6 +51,7 @@ AND abs(pmra_error/pmra)<0.10 \
 AND abs(pmdec_error/pmdec)<0.10 \
 AND pmra BETWEEN -2 AND 2 \
 AND pmdec BETWEEN -8 AND -5;", dump_to_file=False)
+"""
 p = job4.get_results()
 
 #p.pprint()
