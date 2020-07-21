@@ -66,6 +66,6 @@ def plotVBV(title, recordListB, recordListV, fileIso, age1, age1String, age2, ag
 def main():
     recordListB = readData("./data/M12_B.txt")
     recordListV = readData("./data/M12_V.txt")
-    plotVBV("M12", recordListB, recordListV, "./data/iso_jc_z070s.dat", 10.1, "12.6 Gyr", 10.15, "14.1 Gyr", 3.28, 18, 3.28, 18, "./outputGraphs/M12_Iso.jpg")
+    plotVBV("M12", recordListB, recordListV, "./data/iso_jc_z070s.dat", 10.10, "12.6 Gyr", 10.15, "14.1 Gyr", 3.23, 17.7, 3.23, 17.7, "./outputGraphs/M12_Iso.jpg")
 
 main()
