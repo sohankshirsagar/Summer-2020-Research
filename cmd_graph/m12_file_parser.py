@@ -23,38 +23,67 @@ def readData(fileName):
         #     fields.append("")
         record = {}
         for field, value in zip(fieldNames, fields):
-            record[field.strip()] = float(value)
+            record[field.strip()] = (value)
         recordList.append(record)
         # print(json.dumps(recordList, indent = 4))
         # if (index > 5):
         #     break
     return recordList
 
-def plotVBV(title, recordListB, recordListV, fileIso, age1, age1String, age2, age2String, age1X, age1Y, age2X, age2Y, outImageFileName):
+def plotVBV(recordListV, recordListB, gaiaData):
 
     xAxisArray = []
     yAxisArray = []
     for recordB in recordListB:
         # print("{} Adding:{}".format(index, json.dumps(record, indent = 4)))
         for recordV in recordListV:
-            if (math.floor(recordB['X']) == math.floor(recordV['X']) and math.floor(recordB['Y']) == math.floor(recordV['Y'])):
-                xAxisArray.append((recordB['Mag']) - (recordV['Mag']))
-                yAxisArray.append((recordV['Mag']))
+            if (math.floor(float(recordB['X'])) == math.floor(float(recordV['X'])) and math.floor(float(recordB['Y'])) == math.floor(float(recordV['Y']))):
+                xValue = (float(recordB['Mag'])) - (float(recordV['Mag']))
+                yValue = (float(recordV['Mag']))
+                xAxisArray.append(xValue)
+                yAxisArray.append(yValue)
+        # rounding to the nearest 5 for the x and y coordinates
+        # for recordV in recordListV:
+        #     if (myround(recordB['X']) == myround(recordV['X']) and myround(recordB['Y']) == myround(recordV['Y'])):
+        #         xAxisArray.append((recordB['Mag']) - (recordV['Mag']))
+        #         yAxisArray.append((recordV['Mag']))
     # print(xAxisArray)
     # print(yAxisArray)
-    plt.scatter(xAxisArray, yAxisArray, color = "red")
+    matchingGaiaValuesX = []
+    matchingGaiaValuesY = []
+
+    for data in gaiaData:
+        # print("proccessing: {} {}".format(data['Bmag'],data['Vmag']))
+        try:
+            b_vMag = float(data['BP-RP'].strip())
+        except ValueError:
+            # print("Error while converting Bmag: {}".format(data['Bmag']))
+            continue
+        try:
+            vMag = float(data['RPmag'].strip())
+        except ValueError:
+            # print("Error while converting Vmag: {}".format(data['Vmag']))
+            continue
+        for xValue, yValue in zip(xAxisArray, yAxisArray):
+            if ((round((b_vMag), 3) == round((xValue)), 3) and (round((vMag), 3) == round((yValue), 3))):
+                matchingGaiaValuesX.append(xValue)
+                matchingGaiaValuesY.append(yValue)
+    #print(removeValuesX)
+    #print(removeValuesY)
+
+    plt.scatter(matchingGaiaValuesX, matchingGaiaValuesY, color = "red")
     plt.gca().invert_yaxis()
     plt.ylabel('V')
     plt.xlabel('B-V')
-    plt.title(title)
+    plt.title("M12")
 
-    loga, logl, logte = numpy.loadtxt(fileIso, usecols = (0, 3, 4), unpack = True)
+    loga, logl, logte = numpy.loadtxt("./data/isoc_z004m.dat", usecols = (0, 3, 4), unpack = True)
 
-    w7 = numpy.where(loga == age1)
-    w8 = numpy.where(loga == age2)
+    w7 = numpy.where(loga == 9.10)
+    w8 = numpy.where(loga == 9.15)
 
-    plt.plot(-logte[w7] + age1X, -logl[w7] + age1Y, label= age1String)
-    plt.plot(-logte[w8] + age2X, -logl[w8] + age2Y, label= age2String)
+    plt.plot(-logte[w7] + 3.35, -logl[w7] + 19, label= "12.6 Gyr")
+    plt.plot(-logte[w8] + 3.35, -logl[w8] + 19, label= "14.1 Gyr")
 
     # plt.xlabel("Log(Teff)")
     # plt.ylabel("Log L")
@@ -63,9 +92,17 @@ def plotVBV(title, recordListB, recordListV, fileIso, age1, age1String, age2, ag
 
     plt.show()
 
+
+def myround(x, base=5):
+    return base * round(x/base)
+
+
 def main():
     recordListB = readData("./data/M12_B.txt")
     recordListV = readData("./data/M12_V.txt")
-    plotVBV("M12", recordListB, recordListV, "./data/iso_jc_z070s.dat", 10.10, "12.6 Gyr", 10.15, "14.1 Gyr", 3.23, 17.7, 3.23, 17.7, "./outputGraphs/M12_Iso.jpg")
+    gaiaData = readData("./data/gaia_data_m12.txt")
+    #print(gaiaData)
+    plotVBV(recordListV, recordListB, gaiaData)
+
 
 main()

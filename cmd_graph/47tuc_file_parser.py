@@ -4,12 +4,13 @@ import matplotlib.pyplot as plt
 
 y, b_y, err = numpy.loadtxt("./data/47tuc.txt", usecols = (3, 4, 7), unpack = True)
 
-w05 = numpy.where(err < 0.05)
+w03 = numpy.where(err < 0.03)
 
-plt.scatter(-0.055+1.707*b_y[w05], y[w05], color = "red")
+plt.scatter(-0.055+1.707*b_y[w03], y[w03], color = "red")
 plt.gca().invert_yaxis()
 plt.ylabel('V')
 plt.xlabel('B-V')
+plt.title("47 Tucanae")
 
 loga, logl, logte = numpy.loadtxt("./data/iso_jc_z070s.dat", usecols = (0, 3, 4), unpack = True)
 

@@ -40,6 +40,9 @@ def plot(recordList):
         if (data['B_V'] == 0.0):
             continue
 
+        if data['B_V'] > 1.1:
+            continue
+
         xAxisArray.append(b_vMag)
         yAxisArray.append(vMag)
 

@@ -14,8 +14,8 @@ for i, data in enumerate(v):
     if err_b[i] <= 1 and err_v[i] <= 1:
         if (b[i]-v[i] < 0 or b[i]-v[i] > 2):
             continue
-        xAxisArray.append(b[i]-v[i])
-        yAxisArray.append(v[i])
+    xAxisArray.append(b[i]-v[i])
+    yAxisArray.append(v[i])
 
 
 plt.scatter(xAxisArray, yAxisArray)

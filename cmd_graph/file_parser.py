@@ -51,6 +51,7 @@ def plotVBV(recordListV, recordListB):
     plt.gca().invert_yaxis()
     plt.ylabel('V')
     plt.xlabel('B-V')
+    #plt.title("M12")
     plt.show()
 
 def myround(x, base=5):
